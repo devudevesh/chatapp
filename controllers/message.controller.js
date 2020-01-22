@@ -6,3 +6,9 @@ var Messages = [
 exports.getMessage = (req, res) => {
     res.send(Messages)
 }
+
+exports.SaveMessage = (req, res) => {
+    Messages.push(req.body)
+    //io.emit('message',req.body)
+    res.sendStatus(200)
+}

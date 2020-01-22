@@ -3,4 +3,7 @@ module.exports = (app) => {
 
     //Get Messages
     app.get("/message", message.getMessage)
+
+    // Save Message
+    app.post("/message", message.SaveMessage)
 }
