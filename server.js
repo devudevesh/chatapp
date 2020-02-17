@@ -1,21 +1,26 @@
-const express = require('express') 
-const bodyparser = require('body-parser')
-const app = express()
+const express = require('express');
+const bodyparser = require('body-parser');
+const app = express();
 
-var http = require('http').Server(app)
-var io = require('socket.io')(http)
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-app.use(express.static(__dirname))
+app.use(function(req, res, next) {
+  res.io = io;
+  next();
+});
 
-app.use(bodyparser.urlencoded({extended:false}))
-app.use(bodyparser.json())
+app.use(express.static(__dirname));
 
-require("./routes/message.route")(app)
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
 
-io.on('connection', (socket)=> {
-    console.log('A New Client Connected...')
-})
+require('./routes/message.route')(app);
+
+io.on('connection', socket => {
+  console.log('A New Client Connected...');
+});
 
 var server = http.listen(3000, () => {
-    console.log("Server is running on port " + server.address().port)
-})
+  console.log('Server is running on port ' + server.address().port);
+});
